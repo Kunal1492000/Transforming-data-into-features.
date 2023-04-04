@@ -1,0 +1,77 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+
+#import data
+reviews = pd.read_csv("reviews.csv")
+
+ 
+#print column names
+print(reviews.columns)
+
+ 
+#print .info
+print(reviews.info())
+
+
+#look at the counts of recommended
+print(reviews['recommended'].value_counts())
+
+ 
+#create binary dictionary
+binary_dict = {True:1, False:0}
+
+ 
+#transform column
+reviews['recommmended'] =reviews['recommended'].map(binary_dict)
+
+ 
+#print your transformed column
+print(reviews['recommended'].value_counts())
+
+
+#look at the counts of rating
+print(reviews['rating'].value_counts())
+
+ 
+#create dictionary
+rating_dict = {2798:5, 1141:4,564:3,304:2,193:1}
+
+ 
+#transform rating column
+reviews['rating'] = reviews['rating'].map(rating_dict)
+
+ 
+#print your transformed column values
+print(reviews['rating'].value_counts())
+
+#get the number of categories in a feature
+
+print(reviews['department_name'].value_counts())
+
+
+#transform review_date to date-time data
+one_hot = pd.get_dummies(reviews['department_name'])
+
+#print review_date data type 
+reviews = reviews.join(one_hot)
+print(reviews.columns)
+
+#get numerical columns
+reviews = reviews[['clothing_id', 'age','recommended', 'rating', 'Bottoms', 'Dresses','Intimate', 'Jackets', 'Tops', 'Trend']].copy()
+
+ 
+#reset index
+reviews = reviews.set_index('clothing_id')
+
+
+#instantiate standard scaler
+scaler = StandardScaler()
+
+ 
+#fit transform data
+scaler.fit_transform(reviews)
+
+
+
+
